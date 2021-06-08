@@ -62,11 +62,12 @@
 
   
 <div class="row">
+{% for product in products %}
   <div class="col-md-3">
     <div href="#" class="card card-product-grid">
-      <a href="#" class="img-wrap"> <img src="/static/images/items/1.jpg"> </a>
+      <a href="#" class="img-wrap"> <img src={{ product['img_url'] }}> </a>
       <figcaption class="info-wrap">
-        <a href="#" class="title">Just another product name</a>
+	      <a href="products/{{ product['category'] }}/{{ product['name'] }}" class="title">{{ product['name'] }}</a>
         
         <div class="rating-wrap">
           <ul class="rating-stars">
@@ -79,73 +80,11 @@
           </ul>
           <span class="label-rating text-muted"> 34 reviws</span>
         </div>
-        <div class="price mt-1">$179.00</div> <!-- price-wrap.// -->
+        <div class="price mt-1">${{ product['price'] }}</div> <!-- price-wrap.// -->
       </figcaption>
     </div>
   </div> <!-- col.// -->
-  <div class="col-md-3">
-    <div href="#" class="card card-product-grid">
-      <a href="#" class="img-wrap"> <img src="/static/images/items/2.jpg"> </a>
-      <figcaption class="info-wrap">
-        <a href="#" class="title">Some item name here</a>
-        
-        <div class="rating-wrap">
-          <ul class="rating-stars">
-            <li style="width:80%" class="stars-active"> 
-              <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-            </li>
-            <li>
-              <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> 
-            </li>
-          </ul>
-          <span class="label-rating text-muted"> 34 reviws</span>
-        </div>
-        <div class="price mt-1">$280.00</div> <!-- price-wrap.// -->
-      </figcaption>
-    </div>
-  </div> <!-- col.// -->
-  <div class="col-md-3">
-    <div href="#" class="card card-product-grid">
-      <a href="#" class="img-wrap"> <img src="/static/images/items/3.jpg"> </a>
-      <figcaption class="info-wrap">
-        <a href="#" class="title">Great product name here</a>
-        
-        <div class="rating-wrap">
-          <ul class="rating-stars">
-            <li style="width:80%" class="stars-active"> 
-              <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-            </li>
-            <li>
-              <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> 
-            </li>
-          </ul>
-          <span class="label-rating text-muted"> 34 reviws</span>
-        </div>
-        <div class="price mt-1">$56.00</div> <!-- price-wrap.// -->
-      </figcaption>
-    </div>
-  </div> <!-- col.// -->
-  <div class="col-md-3">
-    <div href="#" class="card card-product-grid">
-      <a href="#" class="img-wrap"> <img src="/static/images/items/4.jpg"> </a>
-      <figcaption class="info-wrap">
-        <a href="#" class="title">Just another product name</a>
-        
-        <div class="rating-wrap">
-          <ul class="rating-stars">
-            <li style="width:80%" class="stars-active"> 
-              <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-            </li>
-            <li>
-              <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> 
-            </li>
-          </ul>
-          <span class="label-rating text-muted"> 34 reviws</span>
-        </div>
-        <div class="price mt-1">$179.00</div> <!-- price-wrap.// -->
-      </figcaption>
-    </div>
-  </div> <!-- col.// -->
+{% endfor %}
 </div> <!-- row.// -->
 
 </div> <!-- container .//  -->
@@ -351,12 +290,12 @@
 
     <section class="footer-bottom row">
       <div class="col-md-2">
-        <p class="text-muted"> &copy 2021 k-Octank Rick Kim </p>
+        <p class="text-muted"> &copy 2021 Octank Fashions </p>
       </div>
       <div class="col-md-8 text-md-center">
-        <span  class="px-2">kimcj@amazon.com</span>
-        <span  class="px-2">+82-10-1234-5678</span>
-        <span  class="px-2">서울시 강남구 GS타워 아마존</span>
+        <span  class="px-2">support@octank.com</span>
+        <span  class="px-2">+1-800-800-1234</span>
+        <span  class="px-2">1 Octank Blvd, Richmond, VA, USA</span>
       </div>
       <div class="col-md-2 text-md-right text-muted">
         <i class="fab fa-lg fa-cc-visa"></i>

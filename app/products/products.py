@@ -16,6 +16,7 @@ def main(product):
 	if product_items is None:
 		abort(404)
 	else:
+		print (product_items)
 		product_items= [dict(p) for p in product_items]
 		return render_template("list.html", 
 		 products= product_items[start:end],

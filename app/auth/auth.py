@@ -19,7 +19,7 @@ def main():
 @auth_bp.route("/register", methods=["GET","POST"])
 def signup():
 	if request.method == "POST":
-		form - LoginForm()
+		form = LoginForm()
 		user= User()
 		fname = request.form['fname']
 		lname = request.form['lname']

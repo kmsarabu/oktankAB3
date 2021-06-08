@@ -13,7 +13,7 @@ cd k-octank-fashion
 sudo pip3 install -r requirements.txt
 export DATABASE_HOST="rds-apg.cluster-ct3fprli4uqj.us-east-1.rds.amazonaws.com"
 export DATABASE_USER="oktadmin"
-export DATABASE_PASSWORD=''
+export DATABASE_PASSWORD='kr!shna'
 export DATABASE_DB_NAME="oktank"
 export DATABASE_PORT=5432
 python3 app.py
