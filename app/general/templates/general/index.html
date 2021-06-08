@@ -71,14 +71,22 @@
         
         <div class="rating-wrap">
           <ul class="rating-stars">
-            <li style="width:80%" class="stars-active"> 
+            {% if product['rating'] %}
+            <li style="width:{{ product['rating'] }}%" class="stars-active"> 
+            {%else%}
+            <li style="width:84%" class="stars-active"> 
+            {% endif %}
               <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
             </li>
             <li>
               <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> 
             </li>
           </ul>
-          <span class="label-rating text-muted"> 34 reviws</span>
+          {% if product['rating'] %}
+          <span class="label-rating text-muted"> {{ product['review_cnt'] }} reviws</span>
+          {%else%}
+          <span class="label-rating text-muted"> {{ product['review_cnt'] }} reviws</span>
+          {% endif %}
         </div>
         <div class="price mt-1">${{ product['price'] }}</div> <!-- price-wrap.// -->
       </figcaption>

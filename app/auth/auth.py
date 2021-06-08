@@ -33,3 +33,19 @@ def signup():
 @auth_bp.route("/forgot_password", methods=["GET", "POST"])
 def forgot_pass():
 	return render_template("forgot_password.html", title="forgot password")
+
+@auth_bp.route("/logout")
+def logout():
+    session.pop('user', None)
+    session.pop('email', None)
+    #return redirect("/")
+    return redirect(url_for("general_bp.home"))
+
+@auth_bp.route("/account")
+def account():
+    if session.get('email'):
+        user = User()
+        result = [dict(p) for p in user.get(session['email'])]
+        return render_template("account.html", title="Account", acctinfo=result)
+    else:
+        return redirect(url_for("general_bp.home"))

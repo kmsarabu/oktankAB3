@@ -116,7 +116,7 @@ $(document).ready(function() {
         <span class="badge badge-pill badge-danger notify">0</span>
       </div>
       <div class="widget-header icontext">
-        <a href="/analytic" class="icon icon-sm rounded-circle border"><i class="fa fa-user"></i></a>
+        <a href="/auth/account" class="icon icon-sm rounded-circle border"><i class="fa fa-user"></i></a>
         <div class="text">
           <span class="text-muted">Welcome!</span>
           {% if not 'email' in session: %}
@@ -126,7 +126,8 @@ $(document).ready(function() {
           </div>
           {%else%}
           <div>
-            {{session['email']}}
+            {{session['email']}} | 
+            <a href="/auth/logout">Sign Out</a>
           </div>
             {% endif %}
           

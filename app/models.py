@@ -43,17 +43,26 @@ class Product:
                         ) t
                        ) t where mrank <= {} order by cnt desc
                       )
-                      SELECT id,name,price, description,img_url,'apparels' as category
+                      SELECT id,name,price, description,img_url,'apparels' as category, count(1) review_cnt, round(avg(rating)*20) rating
                       FROM apparels a join items i on i.item_id = a.id and i.category='apparels'
+                       left outer join reviews r on r.category='apparels' and i.item_id = r.item_id
+                      GROUP BY id,name,price, description,img_url
                       UNION
-                      SELECT id,name,price, description,img_url,'fashion' as category
+                      SELECT id,name,price, description,img_url,'fashion' as category, count(1) review_cnt, round(avg(rating)*20) rating
                       FROM fashion a join items i on i.item_id = a.id and i.category='fashion'
+                       left outer join reviews r on r.category='fashion' and i.item_id = r.item_id
+                      GROUP BY id,name,price, description,img_url
                       UNION
-                      SELECT id,name, price, description,img_url,'bicycles' as category
+                      SELECT id,name, price, description,img_url,'bicycles' as category, count(1) review_cnt, round(avg(rating)*20) rating
                       FROM bicycles a join items i on i.item_id = a.id and i.category='bicycles'
+                       left outer join reviews r on r.category='bicycles' and i.item_id = r.item_id
+                      GROUP BY id,name,price, description,img_url
                       UNION
-                      SELECT id,name, price, description,img_url,'jewelry' as category
-                       FROM jewelry a join items i on i.item_id = a.id and i.category='jewelry'""".format(top)
+                      SELECT id,name, price, description,img_url,'jewelry' as category, count(1) review_cnt, round(avg(rating)*20) rating
+                       FROM jewelry a join items i on i.item_id = a.id and i.category='jewelry'
+                       left outer join reviews r on r.category='jewelry' and i.item_id = r.item_id
+                      GROUP BY id,name,price, description,img_url
+                       """.format(top)
             return self.fetch_data(dbconn, sqlstmt)
 
     def show_all_items(self):
@@ -84,8 +93,14 @@ class User:
         self.db.commit()
         cur.close()
 
+    def get(self, email):
+        sql = "select fname, lname, email, id from Users where email='{}'".format(email)
+        with self.db.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute(sql)
+            return cur.fetchall()
+
     def verify(self, email ,password):
-        sql = f"SELECT email , password FROM Users WHERE email='{email}' AND password='{password}'"
+        sql = "SELECT email, password FROM Users WHERE email='{}' AND password='{}'".format(email, password)
         cur = self.db.cursor(cursor_factory=RealDictCursor)
         cur.execute(sql)
         result = cur.fetchall()
