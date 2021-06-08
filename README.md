@@ -13,13 +13,13 @@ cd k-octank-fashion
 sudo pip3 install -r requirements.txt
 export DATABASE_HOST="rds-apg.cluster-ct3fprli4uqj.us-east-1.rds.amazonaws.com"
 export DATABASE_USER="oktadmin"
-export DATABASE_PASSWORD='kr!shna'
+export DATABASE_PASSWORD=''
 export DATABASE_DB_NAME="oktank"
 export DATABASE_PORT=5432
 python3 app.py
 ```
 
-# 2. 부하 테스트
+# 2. Load Tests
 ## apache benchmark
 ```
 ab -n 100000 http://k-octank.shop/
@@ -27,34 +27,34 @@ ab -c 300 -n 500 -t 300 http://k-octank.shop/products/fashion/
 ```
 
 # 3. Latency
-## Cloudfront 거치지 않고 요청
+## Cloudfront
 ```
 curl -s -w '\nLookup Time:\t%{time_namelookup}\nConnect time:\t%{time_connect}\nPreXfer time:\t%{time_pretransfer}\nStartXfer time:\t%{time_starttransfer}\n\nTotal time:\t%{time_total}\n' -o /dev/null http://k-octank-vpc-alb-2-1616693628.us-east-1.elb.amazonaws.com/products/fashion?page=1/
 ```
-- ALB 엔드포인트 (DNS)
+- ALB (DNS)
 
-## Cloudfront를 통한 요청
+## Cloudfront
 ```
 curl -s -w '\nLookup Time:\t%{time_namelookup}\nConnect time:\t%{time_connect}\nPreXfer time:\t%{time_pretransfer}\nStartXfer time:\t%{time_starttransfer}\n\nTotal time:\t%{time_total}\n' -o /dev/null http://k-octank.shop/products/fashion?page=1/
 
 curl -s -w '\nTotal Time:\t%{time_total}\n' -o /dev/null http://k-octank.shop/ 
 
 ```
-- dynamic  동적 호스팅
+- dynamic hosting
 
-# 4. Bastion Host 연결
-## Bastion 호스틑에서 Private Subnet EC2 연결 방법
-1. Bastion 호스트를 연결
+# 4. Bastion Host Connect
+## Bastion at the Host Private Subnet EC2 (How to Connect)
+1. Bastion (Connect to the host)
 ```
 ssh -i "koctank.pem" -N -L 33321:10.10.11.200:22 ec2-user@3.81.174.50 
 ```
 
-2. 새로운 터미널을 열고 밑에 코드 복사
+2. Open a new terminal and copy the code below
 ```
 ssh -i koctank.pem -p 33321 ec2-user@localhost 
 ```
 
-3. RDS MySQL DB 접속
+3. RDS/Aurora PostgreSQL DB Connect
 ```
 mysql -h koctankdbcluster.cmctwgljftes.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
 ```
@@ -133,5 +133,8 @@ LIMIT 10;
 https://learnquicksight.workshop.aws/en/anonymous-embedding.html
 
 # Appendix
-## MySQl.db -> RDS MySQL
-sudo mysql -h koctankdbcluster.cmctwgljftes.us-east-1.rds.amazonaws.com -u admin -P 3306 -p koctank < dump.sql
+## PostgreSQL.db -> RDS PostgreSQL, Import Data
+psql -h <host> -p <port> -U <user> -d <dbname> < dump_pg.sql > dump.out 2>&1
+
+For MySQL:
+  sudo mysql -h koctankdbcluster.cmctwgljftes.us-east-1.rds.amazonaws.com -u admin -P 3306 -p koctank < dump.sql
