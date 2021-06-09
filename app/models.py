@@ -27,7 +27,7 @@ class Product:
             sqlstmt = "SELECT * FROM {}".format(self.product_name)
             return self.fetch_data(dbconn, sqlstmt)
 
-    def popular_items(self, top=5):
+    def popular_items(self, top=5, interval=7):
         with connect() as dbconn:
             sqlstmt = """
                       with items as (
@@ -38,10 +38,10 @@ class Product:
                        from (
                         select item_id, category, count(1) as cnt
                         from orders a join order_details b 
-                         on a.order_id = b.order_id and a.order_date >= now() - interval '1' day
+                         on a.order_id = b.order_id and a.order_date >= now() - interval '{0}' day
                         group by item_id, category
                         ) t
-                       ) t where mrank <= {} order by cnt desc
+                       ) t where mrank <= {1} order by cnt desc
                       )
                       SELECT id,name,price, description,img_url,'apparels' as category, count(1) review_cnt, round(avg(rating)*20) rating
                       FROM apparels a join items i on i.item_id = a.id and i.category='apparels'
@@ -62,7 +62,7 @@ class Product:
                        FROM jewelry a join items i on i.item_id = a.id and i.category='jewelry'
                        left outer join reviews r on r.category='jewelry' and i.item_id = r.item_id
                       GROUP BY id,name,price, description,img_url
-                       """.format(top)
+                       """.format(interval, top)
             return self.fetch_data(dbconn, sqlstmt)
 
     def show_all_items(self):
@@ -79,6 +79,57 @@ class Product:
             ORDER BY name
             """
             return self.fetch_data(dbconn, sqlstmt)
+
+class Kart:
+    def __init__(self):
+        pass
+
+    def add(self, productId, email):
+        sqlstmt = "select id from Users where email='{}'".format(email)
+        with connect() as dbconn:
+            with dbconn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute(sqlstmt)
+                userId = dict(cur.fetchone()).get('id')
+                try:
+                    sqlstmt = "insert into kart(userId, ProductId) values({}, {})".format(userId, productId)
+                    cur.execute(sqlstmt)
+                    dbconn.commit()
+                    msg = "Added successfully"
+                except:
+                    dbconn.rollback()
+                    msg = "Error Occurred"
+
+    def view(self, email):
+        sqlstmt = "select id from Users where email='{}'".format(email)
+        with connect() as dbconn:
+            with dbconn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute(sqlstmt)
+                userId = dict(cur.fetchone()).get('id')
+                sqlstmt = """select productId, name, price, img_url from kart k join apparels a on a.id = k.productId where userId={0}
+                          union
+                          select productId, name, price, img_url from kart k join fashion a on a.id = k.productId where userId={0}
+                          union
+                          select productId, name, price, img_url from kart k join bicycles a on a.id = k.productId where userId={0}
+                          union
+                          select productId, name, price, img_url from kart k join jewelry a on a.id = k.productId where userId={0}
+                          """.format(userId)
+                cur.execute(sqlstmt)
+                return cur.fetchall()
+
+    def remove(self, productId, email):
+        sqlstmt = "select id from Users where email='{}'".format(email)
+        with connect() as dbconn:
+            with dbconn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute(sqlstmt)
+                userId = dict(cur.fetchone()).get('id')
+                try:
+                    sqlstmt = "delete from kart where userId={} and productId = {}".format(userId, productId)
+                    cur.execute(sqlstmt)
+                    dbconn.commit()
+                    msg = "Removed successfully"
+                except:
+                    dbconn.rollback()
+                    msg = "Error Occurred"
 
 class User:
     def __init__(self, db=connect()):

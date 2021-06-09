@@ -1,4 +1,5 @@
 from flask import Flask, abort , session, redirect
+from flask_images import resized_img_src
 from app.general.general import general_bp
 from app.ajax.ajax import ajax_bp
 from app.products.products import  products_bp
