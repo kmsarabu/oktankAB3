@@ -4,4 +4,5 @@ sudo docker run \
 	-e DATABASE_PASSWORD='kr!shna' \
 	-e DATABASE_DB_NAME="oktank" \
 	-e DATABASE_PORT=5432 \
+	-p 8443:8443 \
 	octankretail:1.0
