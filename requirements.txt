@@ -16,7 +16,6 @@ PyMySQL==0.10.1
 flask_wtf
 email_validator
 flask-restful
-flask-resize
 flask-images
 jsonify
 psycopg2

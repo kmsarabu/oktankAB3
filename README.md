@@ -13,7 +13,7 @@ cd k-octank-fashion
 sudo pip3 install -r requirements.txt
 export DATABASE_HOST="rds-apg.cluster-ct3fprli4uqj.us-east-1.rds.amazonaws.com"
 export DATABASE_USER="oktadmin"
-export DATABASE_PASSWORD='kr!shna'
+export DATABASE_PASSWORD='xyz'
 export DATABASE_DB_NAME="oktank"
 export DATABASE_PORT=5432
 python3 app.py
@@ -138,3 +138,14 @@ psql -h <host> -p <port> -U <user> -d <dbname> < dump_pg.sql > dump.out 2>&1
 
 For MySQL:
   sudo mysql -h koctankdbcluster.cmctwgljftes.us-east-1.rds.amazonaws.com -u admin -P 3306 -p koctank < dump.sql
+
+## Docker Build
+sudo docker build -t octankretail:1.0 .
+## Docker Run
+sudo docker run \
+	-e DATABASE_HOST="xyz.us-east-1.rds.amazonaws.com" \
+	-e DATABASE_USER="oktadmin" \
+	-e DATABASE_PASSWORD='xyz' \
+	-e DATABASE_DB_NAME="oktank" \
+	-e DATABASE_PORT=5432 \
+	octankretail:1.0
