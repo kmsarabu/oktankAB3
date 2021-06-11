@@ -8,8 +8,8 @@
 sudo yum update -y
 sudo yum install git -y
 sudo yum install -y python3
-git clone https://github.com/cjk0604/k-octank-fashion.git
-cd k-octank-fashion
+git clone https://github.com/kmsarabu/oktankAB3.git
+cd oktankAB3
 sudo pip3 install -r requirements.txt
 export DATABASE_HOST="xyz.rds.amazonaws.com"
 export DATABASE_USER="oktadmin"
