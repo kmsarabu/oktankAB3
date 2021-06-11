@@ -1,5 +1,5 @@
 ## Production Link
-http://k-octank.shop/
+
 
 # 1. EC2 Launch Template
 ## user data
@@ -11,7 +11,7 @@ sudo yum install -y python3
 git clone https://github.com/cjk0604/k-octank-fashion.git
 cd k-octank-fashion
 sudo pip3 install -r requirements.txt
-export DATABASE_HOST="rds-apg.cluster-ct3fprli4uqj.us-east-1.rds.amazonaws.com"
+export DATABASE_HOST="xyz.rds.amazonaws.com"
 export DATABASE_USER="oktadmin"
 export DATABASE_PASSWORD='xyz'
 export DATABASE_DB_NAME="oktank"
@@ -22,22 +22,22 @@ python3 app.py
 # 2. Load Tests
 ## apache benchmark
 ```
-ab -n 100000 http://k-octank.shop/
-ab -c 300 -n 500 -t 300 http://k-octank.shop/products/fashion/
+ab -n 100000 <url>
+ab -c 300 -n 500 -t 300 <url>/products/fashion/
 ```
 
 # 3. Latency
 ## Cloudfront
 ```
-curl -s -w '\nLookup Time:\t%{time_namelookup}\nConnect time:\t%{time_connect}\nPreXfer time:\t%{time_pretransfer}\nStartXfer time:\t%{time_starttransfer}\n\nTotal time:\t%{time_total}\n' -o /dev/null http://k-octank-vpc-alb-2-1616693628.us-east-1.elb.amazonaws.com/products/fashion?page=1/
+curl -s -w '\nLookup Time:\t%{time_namelookup}\nConnect time:\t%{time_connect}\nPreXfer time:\t%{time_pretransfer}\nStartXfer time:\t%{time_starttransfer}\n\nTotal time:\t%{time_total}\n' -o /dev/null http://<elb-url>.elb.amazonaws.com/products/fashion?page=1/
 ```
 - ALB (DNS)
 
 ## Cloudfront
 ```
-curl -s -w '\nLookup Time:\t%{time_namelookup}\nConnect time:\t%{time_connect}\nPreXfer time:\t%{time_pretransfer}\nStartXfer time:\t%{time_starttransfer}\n\nTotal time:\t%{time_total}\n' -o /dev/null http://k-octank.shop/products/fashion?page=1/
+curl -s -w '\nLookup Time:\t%{time_namelookup}\nConnect time:\t%{time_connect}\nPreXfer time:\t%{time_pretransfer}\nStartXfer time:\t%{time_starttransfer}\n\nTotal time:\t%{time_total}\n' -o /dev/null http://<url>/products/fashion?page=1/
 
-curl -s -w '\nTotal Time:\t%{time_total}\n' -o /dev/null http://k-octank.shop/ 
+curl -s -w '\nTotal Time:\t%{time_total}\n' -o /dev/null http://<url>/ 
 
 ```
 - dynamic hosting
@@ -56,7 +56,7 @@ ssh -i koctank.pem -p 33321 ec2-user@localhost
 
 3. RDS/Aurora PostgreSQL DB Connect
 ```
-mysql -h koctankdbcluster.cmctwgljftes.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
+mysql -h <dbhost> -P 3306 -u admin -p
 ```
 
 table
@@ -69,10 +69,10 @@ query something from tables
 select name, price from fashion limit 10;
 ```
 
-참고: https://boomkim.github.io/2019/12/20/bastion-host-port-forwarding/
+: https://boomkim.github.io/2019/12/20/bastion-host-port-forwarding/
 
-# 5. 로그 분석 및 시각화
-## Athena에서 CloudFront_access log S3 연결
+# 5. 
+## Athena CloudFront_access log S3
 ```
 Create database octank
 ```
@@ -127,8 +127,8 @@ FROM cloudfront_logs
 LIMIT 10;
 ```
 
-# 5.1 Quicksight 연결 및 대시보드 생성
-## 인기 페이지 대시보그 생성
+# 5.1 Quicksight 
+## 
 ## QuickSight Embed
 https://learnquicksight.workshop.aws/en/anonymous-embedding.html
 
