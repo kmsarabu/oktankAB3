@@ -10,7 +10,7 @@ def connect():
     db_name = os.environ['DATABASE_DB_NAME']
     port = os.environ['DATABASE_PORT']
 
-    return psycopg2.connect(host=rds_host, user=db_user, password=password, dbname=db_name, connect_timeout=10000, port=port)
+    return psycopg2.connect(sslmode = "require", host=rds_host, user=db_user, password=password, dbname=db_name, connect_timeout=10000, port=port)
 
 class Product:
     def __init__(self, product_name=None):
