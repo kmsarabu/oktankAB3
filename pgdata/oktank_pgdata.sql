@@ -5909,3 +5909,5 @@ ALTER TABLE ONLY oktank.users
 -- PostgreSQL database dump complete
 --
 
+alter user oktadmin set search_path="oktank", "public";
+
