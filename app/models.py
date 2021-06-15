@@ -27,7 +27,7 @@ class Product:
             sqlstmt = "SELECT * FROM {}".format(self.product_name)
             return self.fetch_data(dbconn, sqlstmt)
 
-    def popular_items(self, top=5, interval=7):
+    def popular_items(self, top=5, interval=180):
         with connect() as dbconn:
             sqlstmt = """
                       with items as (
