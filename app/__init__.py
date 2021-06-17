@@ -6,7 +6,12 @@ from app.products.products import  products_bp
 from app.auth.auth import auth_bp	
 from app.cart.cart import cart_bp
 from flask_cors import CORS
+
+import logging, sys, json_logging, flask
+
 app = Flask(__name__)
+json_logging.init_flask(enable_json=True)
+json_logging.init_request_instrument(app)
 cors = CORS(app)
 app.secret_key = "hhdhdhdhdh7788768"
 
