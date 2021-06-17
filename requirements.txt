@@ -19,3 +19,4 @@ flask-restful
 flask-images
 jsonify
 psycopg2
+json-logging

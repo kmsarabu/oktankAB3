@@ -16,7 +16,6 @@ def main(product):
 	if product_items is None:
 		abort(404)
 	else:
-		print (product_items)
 		product_items= [dict(p) for p in product_items]
 		return render_template("list.html", 
 		 products= product_items[start:end],
@@ -43,7 +42,6 @@ def view():
 	product = Product()
 	product_items = product.show_all_items()
 	product_items = [dict(p) for p in product_items if p['id'] == id]
-	print(product_items)
 	return render_template("view.html", 
 			results={"item":product_items},
 			title="Product View"

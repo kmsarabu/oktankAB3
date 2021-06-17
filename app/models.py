@@ -15,7 +15,6 @@ def connect():
 class Product:
     def __init__(self, product_name=None):
         self.product_name = product_name
-        print("cursor connection done!!!")
 
     def fetch_data(self, dbconn, sqlstmt):
         with dbconn.cursor(cursor_factory=RealDictCursor) as cur:
@@ -158,7 +157,6 @@ class User:
         self.db.commit()
         cur.close()
         row_count =  len(result)
-        print(row_count)
         if row_count == 1 :
             return True
         else:
