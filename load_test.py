@@ -100,6 +100,8 @@ def process_all_requests():
     with ThreadPoolExecutor(max_workers=20) as executor:
         for product in query_list2:
             threads.append(executor.submit(process_request, url, product))
+            for product1 in query_list1:
+                threads.append(executor.submit(process_request, url, product1))
 
         for task in as_completed(threads):
             print (task.result())
