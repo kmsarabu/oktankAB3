@@ -20,3 +20,4 @@ flask-images
 jsonify
 psycopg2
 json-logging
+pymemcache
