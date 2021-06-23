@@ -13,6 +13,7 @@ def main():
 		result = user.verify(email, password)
 		if result == True:
 			session['email'] = email
+			session.permanent = True
 			return redirect(url_for("general_bp.home"))
 	return render_template("login.html", title="Login")
 
@@ -38,6 +39,8 @@ def forgot_pass():
 def logout():
     session.pop('user', None)
     session.pop('email', None)
+    session.pop('Kart', None)
+    session.clear()
     #return redirect("/")
     return redirect(url_for("general_bp.home"))
 

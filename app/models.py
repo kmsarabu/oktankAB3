@@ -98,6 +98,23 @@ class Kart:
                     dbconn.rollback()
                     msg = "Error Occurred"
 
+    def getProducts(self, productList):
+        print (productList)
+        print (type(productList))
+        productListString = ",".join([ str(x) for x in productList])
+        with connect() as dbconn:
+            with dbconn.cursor(cursor_factory=RealDictCursor) as cur:
+                sqlstmt = """select id as productId, name, price, img_url from apparels a where id in ({0})
+                          union
+                          select id as productId, name, price, img_url from fashion a where id in ({0})
+                          union
+                          select id as productId, name, price, img_url from bicycles a where id in ({0})
+                          union
+                          select id as productId, name, price, img_url from jewelry a where id in ({0})
+                          """.format(productListString)
+                cur.execute(sqlstmt)
+                return cur.fetchall()
+
     def view(self, email):
         sqlstmt = "select id from Users where email='{}'".format(email)
         with connect() as dbconn:

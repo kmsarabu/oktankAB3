@@ -6,14 +6,22 @@ from app.products.products import  products_bp
 from app.auth.auth import auth_bp	
 from app.cart.cart import cart_bp
 from flask_cors import CORS
-
-import logging, sys, json_logging, flask
+import logging, sys, json_logging, flask, os
+from flask_session import Session
+from pymemcache.client import base
 
 app = Flask(__name__)
 json_logging.init_flask(enable_json=True)
 json_logging.init_request_instrument(app)
 cors = CORS(app)
-app.secret_key = "hhdhdhdhdh7788768"
+app.secret_key = os.environ.get('SECRET_KEY', "hhdhdhdhdh7788768")
+
+app.config['SESSION_TYPE'] = 'memcached'
+app.config['SESSION_PERMANENT'] = False
+app.config['SESSION_USE_SIGNER'] = True
+app.config['SESSION_MEMCACHED'] = base.Client( (os.environ.get('ECHOST'), int(os.environ.get('ECPORT'))) )
+
+server_session = Session(app)
 
 @app.before_request
 def run():

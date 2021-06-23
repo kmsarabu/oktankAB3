@@ -44,12 +44,12 @@
 		<div>
 			<hr id="seperator">
 			<div id="itemImage">
-				<img src="{{ row['img_url'] }}" style="width: 10vw; min-width: 10px;" id="image"/>
+				<img src="{{ row['img_url'] }}" style="width: 5vw; min-width: 5px;" id="image"/>
 			</div>
 			<div id="itemName">
 				<span id="itemNameTag">{{row['name']}}</span><br>
-				In stock<br>
-				<a href="/removeFromCart?productId={{row['productId']}}">Remove</a>
+				In stock<br> 
+				<a href="{{ url_for('cart_bp.removeFromCart') }}?productId={{ row['productid'] }}">Remove</a>
 			</div>
 			<div id="itemPrice">
 				${{row['price']}}
