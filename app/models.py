@@ -167,6 +167,8 @@ class User:
     def __init__(self, db=connect()):
         self.cursor = db.cursor(cursor_factory=RealDictCursor)
         self.db = db
+        self.user = None
+        self.email = None
 
     def add(self, fname, lname, email, password):
         sql = f"INSERT INTO Users(fname, lname, email, password) VALUES(%s,%s,%s,%s);"
@@ -175,6 +177,8 @@ class User:
         cur.execute(sql, data)
         self.db.commit()
         cur.close()
+        self.user = lname + ", " + fname
+        self.email = email
 
     def get(self, email):
         sql = "select fname, lname, email, id from Users where email='{}'".format(email)

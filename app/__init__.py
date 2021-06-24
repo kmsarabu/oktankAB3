@@ -9,7 +9,7 @@ from app.visits.visits import visits_bp
 from flask_cors import CORS
 import logging, sys, json_logging, flask, os
 from flask_session import Session
-from pymemcache.client import base
+import memcache
 
 app = Flask(__name__)
 json_logging.init_flask(enable_json=True)
@@ -20,9 +20,10 @@ app.secret_key = os.environ.get('SECRET_KEY', "hhdhdhdhdh7788768")
 app.config['SESSION_TYPE'] = 'memcached'
 app.config['SESSION_PERMANENT'] = False
 app.config['SESSION_USE_SIGNER'] = True
-app.config['SESSION_MEMCACHED'] = base.Client( (os.environ.get('ECHOST'), int(os.environ.get('ECPORT'))) )
-
+echosts = [ x.split(':')[0] for x in os.environ.get('ECHOST').split(',') ]
+app.config['SESSION_MEMCACHED'] = memcache.Client( echosts )
 Session(app)
+#sess.init_app(app)
 
 @app.before_request
 def run():
