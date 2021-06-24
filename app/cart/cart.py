@@ -34,8 +34,6 @@ def removeFromCart():
     #Kart().remove(productId, email)
     kartSession = Sessionstore(email)
     cartList = kartSession.get('Kart') or []
-    print (cartList)
-    print (type(cartList))
     if cartList and productId in cartList:
        cartList.remove(productId)
     kartSession.set('Kart', cartList)
@@ -53,7 +51,6 @@ def cart():
     firstName = "Krishna"
     kartSession = Sessionstore(email)
     productsList = kartSession.get('Kart') or []
-    print (productsList)
     if not productsList:
         return redirect(url_for('general_bp.home'))
     products = Kart().getProducts(productsList)
