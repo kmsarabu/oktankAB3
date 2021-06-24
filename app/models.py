@@ -83,14 +83,14 @@ class Kart:
     def __init__(self):
         pass
 
-    def add(self, productId, email):
+    def add(self, productId, email, qty):
         sqlstmt = "select id from Users where email='{}'".format(email)
         with connect() as dbconn:
             with dbconn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute(sqlstmt)
                 userId = dict(cur.fetchone()).get('id')
                 try:
-                    sqlstmt = "insert into kart(userId, ProductId) values({}, {})".format(userId, productId)
+                    sqlstmt = "insert into kart(userId, ProductId) values({0}, {1}, {2}) on conflict do update set Qty = Qty + 1 where userid = {0} and ProductId = {1}".format(userId, productId, 1)
                     cur.execute(sqlstmt)
                     dbconn.commit()
                     msg = "Added successfully"
@@ -121,13 +121,13 @@ class Kart:
             with dbconn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute(sqlstmt)
                 userId = dict(cur.fetchone()).get('id')
-                sqlstmt = """select productId, name, price, img_url from kart k join apparels a on a.id = k.productId where userId={0}
+                sqlstmt = """select productId, name, price, img_url, qty from kart k join apparels a on a.id = k.productId where userId={0}
                           union
-                          select productId, name, price, img_url from kart k join fashion a on a.id = k.productId where userId={0}
+                          select productId, name, price, img_url, qty from kart k join fashion a on a.id = k.productId where userId={0}
                           union
-                          select productId, name, price, img_url from kart k join bicycles a on a.id = k.productId where userId={0}
+                          select productId, name, price, img_url, qty from kart k join bicycles a on a.id = k.productId where userId={0}
                           union
-                          select productId, name, price, img_url from kart k join jewelry a on a.id = k.productId where userId={0}
+                          select productId, name, price, img_url, qty from kart k join jewelry a on a.id = k.productId where userId={0}
                           """.format(userId)
                 cur.execute(sqlstmt)
                 return cur.fetchall()
@@ -146,6 +146,22 @@ class Kart:
                 except:
                     dbconn.rollback()
                     msg = "Error Occurred"
+
+    def update(self, productId, email, qty):
+        sqlstmt = "select id from Users where email='{}'".format(email)
+        with connect() as dbconn:
+            with dbconn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute(sqlstmt)
+                userId = dict(cur.fetchone()).get('id')
+                try:
+                    sqlstmt = "update kart set qty = {} where userId={} and productId = {}".format(qty, userId, productId)
+                    cur.execute(sqlstmt)
+                    dbconn.commit()
+                    msg = "Removed successfully"
+                except:
+                    dbconn.rollback()
+                    msg = "Error Occurred"
+
 
 class User:
     def __init__(self, db=connect()):

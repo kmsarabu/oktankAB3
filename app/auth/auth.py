@@ -17,7 +17,8 @@ def main():
 			products = Kart().view(email)
 			productList = []
 			for x in products:
-				productList.append(x['productid'])
+				for x in range(x['qty']):
+					productList.append(x['productid'])
 			session['Kart'] = productList
 			return redirect(url_for("general_bp.home"))
 	return render_template("login.html", title="Login")
