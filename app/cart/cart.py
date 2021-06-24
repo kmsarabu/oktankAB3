@@ -1,12 +1,9 @@
 from flask import Blueprint, render_template, jsonify, session, request, redirect, url_for
 from flask_images import resized_img_src
 from app.models import Kart
-from pymemcache.client import base
 import json
 
 cart_bp = Blueprint("cart_bp", __name__, template_folder = "templates")
-
-client = base.Client( ('ab3ec.qkhr2o.cfg.use1.cache.amazonaws.com', 11211) )
 
 @cart_bp.route("/addToCart")
 def addToCart():
@@ -14,7 +11,7 @@ def addToCart():
         return redirect(url_for('auth_bp.main'))
     else:
         productId = int(request.args.get('productId'))
-        #Kart().add(productId, session['email'])
+        Kart().add(productId, session['email'])
         cartList = session.get('Kart', [])
         cartList.append(productId)
         session['Kart'] = cartList
@@ -27,7 +24,7 @@ def removeFromCart():
         return redirect(url_for('auth_bp.home'))
     email = session['email']
     productId = int(request.args.get('productId'))
-    #Kart().remove(productId, session['email'])
+    Kart().remove(productId, session['email'])
     if 'Kart' in session:
         session['Kart'].remove(productId)
     return redirect(url_for('cart_bp.cart'))
@@ -57,5 +54,5 @@ def cart():
         totalPrice += row.get('price')
         noOfItems += 1
     print (products)
-    return render_template("cart/cart.html", products = products, totalPrice=totalPrice, loggedIn=True, firstName=firstName, noOfItems=noOfItems)
+    return render_template("cart/cart.html", products = products, totalPrice=round(totalPrice,2), loggedIn=True, firstName=firstName, noOfItems=noOfItems)
 

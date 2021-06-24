@@ -1,6 +1,7 @@
 from flask import Blueprint, Flask , jsonify, render_template, session, request, redirect, url_for
-from app.models import User
+from app.models import User, Kart
 from .forms import RegistrationForm, LoginForm
+
 auth_bp = Blueprint("auth_bp", __name__, template_folder="templates/auth")
 
 @auth_bp.route("/login", methods=["GET", "POST"])
@@ -13,7 +14,11 @@ def main():
 		result = user.verify(email, password)
 		if result == True:
 			session['email'] = email
-			session.permanent = True
+			products = Kart().view(email)
+			productList = []
+			for x in products:
+				productList.append(x['productid'])
+			session['Kart'] = productList
 			return redirect(url_for("general_bp.home"))
 	return render_template("login.html", title="Login")
 

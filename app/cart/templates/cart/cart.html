@@ -21,47 +21,48 @@
 		</div>
 	{% else %}
 	<div class="dropdown">
-		<button class="dropbtn">Hello, <br>{{firstName}}</button>
+		<button class="dropbtn">Hello, {{firstName}}</button>
 		<div class="dropdown-content">
 			<a href="/account/orders">Your orders</a>
 			<a href="/account/profile">Your profile</a>
 			<hr>
 			<a href="/auth/logout">Sign Out</a>
 		</div>
+                <br>
 	</div>
 	{% endif %}
 	<div id="kart">
 		<a class="link" href="/cart">
-		<img src={{url_for('static', filename='images/shoppingCart.png')}} id="cartIcon" />
-		CART {{noOfItems}}
+		<img src={{url_for('static', filename='images/shoppingCart.png')}} style="width: 5vw; min-width: 5px;" id="cartIcon" />
+		Cart {{noOfItems}} Items
 		</a>
 	</div>
 </div>
 <div id="cartItems">
 	<h2>Shopping Cart</h2>
-	<div id="tableItems">
+	<div style="overflow-x: auto;">
+           <table>
+                <col style="width: 30%;" />
+                <col style="width: 40%;" />
+                <col style="width: 10%;" />
+                <col style="width: 10%;" />
+                <col style="width: 10%;" />
 		{% for row in products %}
-		<div>
-			<hr id="seperator">
-			<div id="itemImage">
-				<img src="{{ row['img_url'] }}" style="width: 5vw; min-width: 5px;" id="image"/>
-			</div>
-			<div id="itemName">
-				<span id="itemNameTag">{{row['name']}}</span><br>
-				In stock<br> 
-				<a href="{{ url_for('cart_bp.removeFromCart') }}?productId={{ row['productid'] }}">Remove</a>
-			</div>
-			<div id="itemPrice">
-				${{row['price']}}
-			</div>
-		</div>
+                <tr>
+                    <td><img src="{{ row['img_url'] }}" style="width: 2vw; min-width: 2px;" id="image"/></td>
+		    <td><span style="width:100px;" id="itemNameTag">{{row['name']}}</span></td>
+                    <td><span class="price mt-1">${{row['price']}}</span></td>
+		    <td><span style="width:15px;" id="StockStatus">In stock</span></td>
+		    <td><a href="{{ url_for('cart_bp.removeFromCart') }}?productId={{ row['productid'] }}">Remove</a></td>
+		</tr>
 		{% endfor %}
-		<hr id="seperator">
-		<div id="total">
-			<span id="subtotal">Subtotal</span> : ${{totalPrice}}
-		</div>
+            </table>
+            <br><br>
+	    <div id="total">
+		<span id="subtotal">Subtotal</span> : <span class="price mt-1">${{totalPrice}}</span>
+	    </div>
 	</div>
 </div>
-<a href="/checkout">Proceed to checkout</a>
+<button class="dropbtn" style=" float: right" href="/checkout">Proceed to checkout</button>
 </body>
 </html>
