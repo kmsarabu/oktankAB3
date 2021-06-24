@@ -32,10 +32,10 @@
       <dl class="param param-inline">
         <dt>Quantity: </dt>
         <dd>
-          <select class="form-control form-control-sm" style="width:70px;">
-            <option> 1 </option>
-            <option> 2 </option>
-            <option> 3 </option>
+          <select class="form-control form-control-sm" id="qty" style="width:70px;">
+            <option value=1> 1 </option>
+            <option value=2> 2 </option>
+            <option value=3> 3 </option>
           </select>
         </dd>
       </dl>  <!-- item-property .// -->
@@ -62,7 +62,7 @@
   </div> <!-- row.// -->
   <hr>
   <a href="#" class="btn btn-lg btn-primary text-uppercase"> Buy now </a>
-  <a href="{{ url_for('cart_bp.addToCart') }}?productId={{results['item'][0]['id']}}" class="btn btn-lg btn-outline-primary text-uppercase"> <i class="fas fa-shopping-cart"></i> Add to cart </a>
+  <a href="{{ url_for('cart_bp.addToCart') }}?productId={{results['item'][0]['id']}}&qty=" + $('select[name="qty" option:selected').text() class="btn btn-lg btn-outline-primary text-uppercase"> <i class="fas fa-shopping-cart"></i> Add to cart </a>
 </article> <!-- card-body.// -->
     </aside> <!-- col.// -->
   </div> <!-- row.// -->

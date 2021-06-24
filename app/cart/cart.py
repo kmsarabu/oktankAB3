@@ -11,7 +11,8 @@ def addToCart():
         return redirect(url_for('auth_bp.main'))
     else:
         productId = int(request.args.get('productId'))
-        Kart().add(productId, session['email'])
+        qty = request.args.get('qty', 1)
+        Kart().add(productId, session['email'], qty)
         cartList = session.get('Kart', [])
         cartList.append(productId)
         session['Kart'] = cartList
@@ -45,11 +46,13 @@ def cart():
     if not productsList:
         return redirect(url_for('general_bp.home'))
     products = Kart().getProducts(productsList)
+    for product in products:
+       product['qty'] = productsList.count(product['productid'])
     #products = Kart().view(email)
     totalPrice = 0
     noOfItems = 0
     for row in products:
-        totalPrice += row.get('price')
+        totalPrice += row.get('price') * row.get('qty')
         noOfItems += 1
     return render_template("cart/cart.html", products = products, totalPrice=round(totalPrice,2), loggedIn=True, firstName=firstName, noOfItems=noOfItems)
 

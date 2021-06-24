@@ -17,7 +17,10 @@ def main():
 			products = Kart().view(email)
 			productList = []
 			for x in products:
-				for x in range(x['qty']):
+				r = x.get('qty')
+				if r is None:
+					r = 1
+				for z in range(r):
 					productList.append(x['productid'])
 			session['Kart'] = productList
 			return redirect(url_for("general_bp.home"))

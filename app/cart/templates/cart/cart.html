@@ -42,8 +42,9 @@
 	<h2>Shopping Cart</h2>
 	<div style="overflow-x: auto;">
            <table>
-                <col style="width: 30%;" />
+                <col style="width: 20%;" />
                 <col style="width: 40%;" />
+                <col style="width: 10%;" />
                 <col style="width: 10%;" />
                 <col style="width: 10%;" />
                 <col style="width: 10%;" />
@@ -51,6 +52,7 @@
                 <tr>
                     <td><img src="{{ row['img_url'] }}" style="width: 2vw; min-width: 2px;" id="image"/></td>
 		    <td><span style="width:100px;" id="itemNameTag">{{row['name']}}</span></td>
+                    <td><span style="width:15px;" id="Qty">Qty: {{row['qty']}}</span></td>
                     <td><span class="price mt-1">${{row['price']}}</span></td>
 		    <td><span style="width:15px;" id="StockStatus">In stock</span></td>
 		    <td><a href="{{ url_for('cart_bp.removeFromCart') }}?productId={{ row['productid'] }}">Remove</a></td>
@@ -59,10 +61,11 @@
             </table>
             <br><br>
 	    <div id="total">
-		<span id="subtotal">Subtotal</span> : <span class="price mt-1">${{totalPrice}}</span>
+		<span id="subtotal">Subtotal               </span> : <span class="price mt-1">${{totalPrice}}</span>
 	    </div>
 	</div>
 </div>
+<a style=" float: center" class="btn" href="{{ url_for('general_bp.home') }}"><button>Continue Shopping</button></a>
 <button class="dropbtn" style=" float: right" href="/checkout">Proceed to checkout</button>
 </body>
 </html>
