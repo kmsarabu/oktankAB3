@@ -1,4 +1,5 @@
 from flask import Blueprint, Flask , jsonify, render_template, session, request, redirect, url_for
+from flask_login import login_user, logout_user
 from app.models import User, Kart
 from .forms import RegistrationForm, LoginForm
 
@@ -13,6 +14,8 @@ def main():
 		password = request.form['password']
 		result = user.verify(email, password)
 		if result == True:
+			login_user(email) 
+			flask.flash('Logged in successfully')
 			session['email'] = email
 			products = Kart().view(email)
 			productList = []
@@ -50,6 +53,7 @@ def logout():
     session.pop('email', None)
     session.pop('Kart', None)
     session.clear()
+    logout_user()
     #return redirect("/")
     return redirect(url_for("general_bp.home"))
 

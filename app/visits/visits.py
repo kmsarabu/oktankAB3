@@ -9,7 +9,7 @@ visits_bp = Blueprint("visits_bp", __name__, template_folder="templates/visits")
 def index():
   username=""
   if session and 'email' in session:
-     username = escape(session.get('user'))
+     username = escape(session.get('email'))
   session['visits'] = session.get('visits', 0) + 1
   return u'''<!doctype html>
         <html>
