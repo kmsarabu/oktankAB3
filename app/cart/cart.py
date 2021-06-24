@@ -15,8 +15,8 @@ def addToCart():
         cartList = session.get('Kart', [])
         cartList.append(productId)
         session['Kart'] = cartList
-        print (session)
-        return redirect(url_for('products_bp.view') + "?id={}".format(productId))
+        #return redirect(url_for('products_bp.view') + "?id={}".format(productId))
+        return redirect(url_for('cart_bp.cart'))
 
 @cart_bp.route("/removeFromCart")
 def removeFromCart():
@@ -40,12 +40,10 @@ def cart():
     email = session['email']
     firstName = "Krishna"
     productsList = []
-    print (session)
     if 'Kart' in session:
         productsList = session.get('Kart', [])
     if not productsList:
         return redirect(url_for('general_bp.home'))
-    print (productsList)
     products = Kart().getProducts(productsList)
     #products = Kart().view(email)
     totalPrice = 0
@@ -53,6 +51,5 @@ def cart():
     for row in products:
         totalPrice += row.get('price')
         noOfItems += 1
-    print (products)
     return render_template("cart/cart.html", products = products, totalPrice=round(totalPrice,2), loggedIn=True, firstName=firstName, noOfItems=noOfItems)
 
