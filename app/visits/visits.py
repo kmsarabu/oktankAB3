@@ -1,6 +1,5 @@
 import os, socket
 from flask import Blueprint, render_template, request, jsonify, url_for, redirect, Response
-from pymemcache.client import base
 from flask import session, redirect, escape, request
 
 visits_bp = Blueprint("visits_bp", __name__, template_folder="templates/visits")
