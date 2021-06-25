@@ -20,5 +20,5 @@ flask-images
 jsonify
 psycopg2
 json-logging
-memcache
 flask_session
+python-memcached
