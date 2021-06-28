@@ -177,7 +177,6 @@ class User:
     def add(self, fname, lname, email, password):
         sql = f"INSERT INTO Users(fname, lname, email, password) VALUES(%s,%s,%s,%s);"
         data=(fname, lname, email, password)
-        for x in 
         try:
            cur = self.db.cursor(cursor_factory=RealDictCursor)
         except:
