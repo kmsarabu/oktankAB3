@@ -179,11 +179,12 @@ class User:
         data=(fname, lname, email, password)
         try:
            cur = self.db.cursor(cursor_factory=RealDictCursor)
+           cur.execute(sql, data)
         except:
            self.db=connect()
            self.cursor = self.db.cursor(cursor_factory=RealDictCursor)
            cur = self.cursor
-        cur.execute(sql, data)
+           cur.execute(sql, data)
         self.db.commit()
         cur.close()
         self.user = lname + ", " + fname
@@ -193,22 +194,24 @@ class User:
         sql = "select fname, lname, email, id from Users where email='{}'".format(email)
         try:
            cur = self.db.cursor(cursor_factory=RealDictCursor)
+           cur.execute(sql)
         except:
            self.db=connect()
            self.cursor = self.db.cursor(cursor_factory=RealDictCursor)
            cur = self.cursor
-        cur.execute(sql)
+           cur.execute(sql)
         return cur.fetchall()
 
     def verify(self, email ,password):
         sql = "SELECT email, password FROM Users WHERE email='{}' AND password='{}'".format(email, password)
         try:
            cur = self.db.cursor(cursor_factory=RealDictCursor)
+           cur.execute(sql)
         except:
            self.db=connect()
            self.cursor = self.db.cursor(cursor_factory=RealDictCursor)
            cur = self.cursor
-        cur.execute(sql)
+           cur.execute(sql)
         result = cur.fetchall()
         self.db.commit()
         cur.close()
