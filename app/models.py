@@ -10,7 +10,7 @@ def connect():
     db_name = os.environ['DATABASE_DB_NAME']
     port = os.environ['DATABASE_PORT']
 
-    return psycopg2.connect(sslmode="require", host=rds_host, user=db_user, password=password, dbname=db_name, connect_timeout=10000, port=port)
+    return psycopg2.connect(sslmode="require", host=rds_host, user=db_user, password=password, dbname=db_name, connect_timeout=10000, port=port, keepalives_interval=30)
 
 class Product:
     def __init__(self, product_name=None):
@@ -165,7 +165,11 @@ class Kart:
 
 class User:
     def __init__(self, db=connect()):
-        self.cursor = db.cursor(cursor_factory=RealDictCursor)
+        try:
+           self.cursor = db.cursor(cursor_factory=RealDictCursor)
+        except:
+           db=connect()
+           self.cursor = db.cursor(cursor_factory=RealDictCursor)
         self.db = db
         self.user = None
         self.email = None
@@ -173,7 +177,13 @@ class User:
     def add(self, fname, lname, email, password):
         sql = f"INSERT INTO Users(fname, lname, email, password) VALUES(%s,%s,%s,%s);"
         data=(fname, lname, email, password)
-        cur = self.db.cursor(cursor_factory=RealDictCursor)
+        for x in 
+        try:
+           cur = self.db.cursor(cursor_factory=RealDictCursor)
+        except:
+           self.db=connect()
+           self.cursor = self.db.cursor(cursor_factory=RealDictCursor)
+           cur = self.cursor
         cur.execute(sql, data)
         self.db.commit()
         cur.close()
@@ -182,13 +192,23 @@ class User:
 
     def get(self, email):
         sql = "select fname, lname, email, id from Users where email='{}'".format(email)
-        with self.db.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute(sql)
-            return cur.fetchall()
+        try:
+           cur = self.db.cursor(cursor_factory=RealDictCursor)
+        except:
+           self.db=connect()
+           self.cursor = self.db.cursor(cursor_factory=RealDictCursor)
+           cur = self.cursor
+        cur.execute(sql)
+        return cur.fetchall()
 
     def verify(self, email ,password):
         sql = "SELECT email, password FROM Users WHERE email='{}' AND password='{}'".format(email, password)
-        cur = self.db.cursor(cursor_factory=RealDictCursor)
+        try:
+           cur = self.db.cursor(cursor_factory=RealDictCursor)
+        except:
+           self.db=connect()
+           self.cursor = self.db.cursor(cursor_factory=RealDictCursor)
+           cur = self.cursor
         cur.execute(sql)
         result = cur.fetchall()
         self.db.commit()
